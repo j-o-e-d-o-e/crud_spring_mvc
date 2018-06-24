@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -27,11 +28,13 @@ public class IndexControllerTest {
     private RecipeService service;
     @Mock
     private Model model;
+    private MockMvc mockMvc;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         controller = new IndexController(service);
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     @Test
@@ -39,11 +42,12 @@ public class IndexControllerTest {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("index"));
+                .andExpect(view().name("index"))
+                .andExpect(model().attributeExists("recipes"));
     }
 
     @Test
-    public void index() {
+    public void testGetIndexPage() throws Exception {
         //given
         Set<Recipe> recipes = new HashSet<>();
         Recipe recipe1 = new Recipe();

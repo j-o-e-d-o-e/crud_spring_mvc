@@ -38,7 +38,7 @@ public class ImageServiceTest {
 
         //when
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
-        imageService.saveImageFile(id, multipartFile);
+        imageService.saveImageToDB(recipeOptional.orElse(null), multipartFile);
 
         //then
         ArgumentCaptor<Recipe> argumentCaptor = ArgumentCaptor.forClass(Recipe.class);

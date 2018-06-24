@@ -20,15 +20,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RecipeControllerTest {
     @Mock
-    private
-    RecipeService service;
-    private RecipeController controller;
+    private RecipeService service;
     private MockMvc mockMvc;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        controller = new RecipeController(service);
+        RecipeController controller = new RecipeController(service);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
