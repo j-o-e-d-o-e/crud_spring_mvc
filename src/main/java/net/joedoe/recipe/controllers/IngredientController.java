@@ -2,7 +2,6 @@ package net.joedoe.recipe.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import net.joedoe.recipe.commands.IngredientCommand;
-import net.joedoe.recipe.commands.RecipeCommand;
 import net.joedoe.recipe.commands.UnitOfMeasureCommand;
 import net.joedoe.recipe.services.IIngredientService;
 import net.joedoe.recipe.services.IRecipeService;
@@ -30,33 +29,28 @@ public class IngredientController {
     @GetMapping("/recipe/{recipeId}/ingredients")
     public String listIngredients(@PathVariable String recipeId, Model model) {
         log.debug("Getting ingredient list for recipe id: " + recipeId);
-        // use command object to avoid lazy load errors in Thymeleaf.
+        // use command obj to avoid lazy load errors in Thymeleaf
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(recipeId)));
         return "recipe/ingredient/list";
     }
 
-    @GetMapping("recipe/{recipeId}/ingredient/{id}/show")
-    public String showRecipeIngredient(@PathVariable String recipeId, @PathVariable String id, Model model) {
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(id)));
+    @GetMapping("recipe/{recipeId}/ingredient/{ingredientId}/show")
+    public String showRecipeIngredient(@PathVariable String recipeId, @PathVariable String ingredientId, Model model) {
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(Long.valueOf(recipeId), Long.valueOf(ingredientId)));
         return "recipe/ingredient/show";
     }
 
     @GetMapping("recipe/{recipeId}/ingredient/new")
     public String newIngredient(@PathVariable String recipeId, Model model) {
         //make sure we have a good id value
-        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+//        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
         //todo raise exception if null
 
-        //need to return back parent id for hidden form property
         IngredientCommand ingredientCommand = new IngredientCommand();
         ingredientCommand.setRecipeId(Long.valueOf(recipeId));
-        model.addAttribute("ingredient", ingredientCommand);
-
-        //init uom
         ingredientCommand.setUom(new UnitOfMeasureCommand());
-
+        model.addAttribute("ingredient", ingredientCommand);
         model.addAttribute("uomList", unitOfMeasureService.listAllUoms());
-
         return "recipe/ingredient/ingredient-form";
     }
 
@@ -75,10 +69,10 @@ public class IngredientController {
         return "redirect:/recipe/" + savedCommand.getRecipeId() + "/ingredient/" + savedCommand.getId() + "/show";
     }
 
-    @GetMapping("recipe/{recipeId}/ingredient/{id}/delete")
-    public String deleteIngredient(@PathVariable String recipeId, @PathVariable String id) {
-        log.debug("deleting ingredient id:" + id);
-        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(id));
+    @GetMapping("recipe/{recipeId}/ingredient/{ingredientId}/delete")
+    public String deleteIngredient(@PathVariable String recipeId, @PathVariable String ingredientId) {
+        log.debug("deleting ingredient id:" + ingredientId);
+        ingredientService.deleteById(Long.valueOf(recipeId), Long.valueOf(ingredientId));
         return "redirect:/recipe/" + recipeId + "/ingredients";
     }
 }
