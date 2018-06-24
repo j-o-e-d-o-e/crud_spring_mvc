@@ -1,6 +1,7 @@
 package net.joedoe.recipe.services;
 
 import lombok.extern.slf4j.Slf4j;
+import net.joedoe.recipe.commands.RecipeCommand;
 import net.joedoe.recipe.domains.Recipe;
 import net.joedoe.recipe.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,8 @@ public class ImageService implements IImageService {
 
     @Override
     @Transactional
-    public void saveImageFile(Long recipeId, MultipartFile file) {
+    public void saveImageToDB(Recipe recipe, MultipartFile file) {
         try {
-            Recipe recipe = recipeRepository.findById(recipeId).orElse(null);
             Byte[] bytes = new Byte[file.getBytes().length]; //hibernate prefers obj to primitives
             int i = 0;
             for (byte b : file.getBytes()) {
@@ -35,5 +35,16 @@ public class ImageService implements IImageService {
             log.error("Error occured", e);
             e.printStackTrace();
         }
+    }
+
+    @Override
+    @Transactional
+    public byte[] loadImageFromDB(RecipeCommand recipeCommand) {
+        byte[] byteArray = new byte[recipeCommand.getImage().length];
+        int i = 0;
+        for (Byte wrappedByte : recipeCommand.getImage()) {
+            byteArray[i++] = wrappedByte; //auto unboxing
+        }
+        return byteArray;
     }
 }

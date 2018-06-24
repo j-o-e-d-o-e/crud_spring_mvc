@@ -1,6 +1,7 @@
 package net.joedoe.recipe.controllers;
 
 import net.joedoe.recipe.commands.RecipeCommand;
+import net.joedoe.recipe.domains.Recipe;
 import net.joedoe.recipe.services.IRecipeService;
 import net.joedoe.recipe.services.ImageService;
 import org.junit.Before;
@@ -33,7 +34,7 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void showUploadForm() throws Exception {
+    public void testShowUploadForm() throws Exception {
         //given
         RecipeCommand command = new RecipeCommand();
         command.setId(1L);
@@ -49,39 +50,44 @@ public class ImageControllerTest {
     }
 
     @Test
-    public void handleImagePost() throws Exception {
+    public void testSaveImageToDB() throws Exception {
         //given
         MockMultipartFile multipartFile =
-                new MockMultipartFile("imagefile", "testing.txt", "text/plain",
+                new MockMultipartFile("image-file", "testing.txt", "text/plain",
                         "Joe Doe Recipe".getBytes());
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
 
         //when
+        when(recipeService.findById(anyLong())).thenReturn(recipe);
+
+        //then
         mockMvc.perform(multipart("/recipe/1/image").file(multipartFile))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/recipe/1/show"));
-
-        //then
-        verify(imageService, times(1)).saveImageFile(anyLong(), any());
+        verify(imageService, times(1)).saveImageToDB(eq((Recipe) recipeService.findById(anyLong())), any());
     }
 
     @Test
-    public void renderImageFromDB() throws Exception {
+    public void testLoadImageFromDB() throws Exception {
         //given
         RecipeCommand command = new RecipeCommand();
         command.setId(1L);
         String s = "fake image text";
+        byte[] bytesUnboxed = s.getBytes();
         Byte[] bytesBoxed = new Byte[s.getBytes().length];
         int i = 0;
-        for (byte primByte : s.getBytes()){
+        for (byte primByte : s.getBytes()) {
             bytesBoxed[i++] = primByte;
         }
         command.setImage(bytesBoxed);
 
         //when
         when(recipeService.findCommandById(anyLong())).thenReturn(command);
+        when(imageService.loadImageFromDB(any(RecipeCommand.class))).thenReturn(bytesUnboxed);
 
         //then
-        MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeimage"))
+        MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipe-image"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
         byte[] reponseBytes = response.getContentAsByteArray();
