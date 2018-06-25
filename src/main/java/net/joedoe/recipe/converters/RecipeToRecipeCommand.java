@@ -2,7 +2,6 @@ package net.joedoe.recipe.converters;
 
 import lombok.Synchronized;
 import net.joedoe.recipe.commands.RecipeCommand;
-import net.joedoe.recipe.domains.Category;
 import net.joedoe.recipe.domains.Recipe;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -41,10 +40,10 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
         command.setImage(source.getImage());
         command.setNotes(notesConverter.convert(source.getNotes()));
         if (source.getCategories() != null && source.getCategories().size() > 0) {
-            source.getCategories().forEach(category -> command.getCategories().add(categoryConverter.convert(category)));
+            source.getCategories().forEach(category -> command.addCategory(categoryConverter.convert(category)));
         }
         if (source.getIngredients() != null && source.getIngredients().size() > 0) {
-            source.getIngredients().forEach(ingredient -> command.getIngredients().add(ingredientConverter.convert(ingredient)));
+            source.getIngredients().forEach(ingredient -> command.addIngredient(ingredientConverter.convert(ingredient)));
         }
         return command;
     }

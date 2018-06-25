@@ -10,4 +10,5 @@ import lombok.Setter;
 public class NotesCommand {
     private Long id;
     private String text;
+    //no reference of recipe displayed to view
 }

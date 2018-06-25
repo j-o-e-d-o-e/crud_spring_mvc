@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @Component
 public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private final CategoryService categoryService;
-    private final IRecipeService recipeService;
+    private final IRecipeService<Recipe> recipeService;
     private final UnitOfMeasureService unitOfMeasureService;
 
     public DevBootstrap(CategoryService categoryService, RecipeService recipeService, UnitOfMeasureService unitOfMeasureService) {

@@ -1,5 +1,6 @@
 package net.joedoe.recipe.converters;
 
+import lombok.Synchronized;
 import net.joedoe.recipe.commands.IngredientCommand;
 import net.joedoe.recipe.domains.Ingredient;
 import org.springframework.core.convert.converter.Converter;
@@ -14,6 +15,7 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         this.uomConverter = uomConverter;
     }
 
+    @Synchronized
     @Nullable
     @Override
     public Ingredient convert(IngredientCommand source) {
@@ -22,8 +24,8 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         }
         final Ingredient ingredient = new Ingredient();
         ingredient.setId(source.getId());
-        ingredient.setAmount(source.getAmount());
         ingredient.setDescription(source.getDescription());
+        ingredient.setAmount(source.getAmount());
         ingredient.setUom(uomConverter.convert(source.getUom()));
         return ingredient;
     }

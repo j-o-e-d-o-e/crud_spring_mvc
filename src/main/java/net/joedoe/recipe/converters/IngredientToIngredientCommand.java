@@ -15,21 +15,21 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
         this.uomConverter = uomConverter;
     }
 
-    @Synchronized
-    @Nullable
+    @Synchronized //prevents thread interference and memory consistency errors
+    @Nullable //method accepts null values
     @Override
-    public IngredientCommand convert(Ingredient ingredient) {
-        if (ingredient == null) {
+    public IngredientCommand convert(Ingredient source) {
+        if (source == null) {
             return null;
         }
         final IngredientCommand ingredientCommand = new IngredientCommand();
-        ingredientCommand.setId(ingredient.getId());
-        if (ingredient.getRecipe() != null) {
-            ingredientCommand.setRecipeId(ingredient.getRecipe().getId());
+        ingredientCommand.setId(source.getId());
+        if (source.getRecipe() != null) {
+            ingredientCommand.setRecipeId(source.getRecipe().getId());
         }
-        ingredientCommand.setAmount(ingredient.getAmount());
-        ingredientCommand.setDescription(ingredient.getDescription());
-        ingredientCommand.setUom(uomConverter.convert(ingredient.getUom()));
+        ingredientCommand.setDescription(source.getDescription());
+        ingredientCommand.setAmount(source.getAmount());
+        ingredientCommand.setUom(uomConverter.convert(source.getUom()));
         return ingredientCommand;
     }
 }
