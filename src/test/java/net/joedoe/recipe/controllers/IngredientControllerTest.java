@@ -60,7 +60,7 @@ public class IngredientControllerTest {
         IngredientCommand ingredientCommand = new IngredientCommand();
 
         //when
-        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+        when(ingredientService.findIngredient(anyLong(), anyLong())).thenReturn(ingredientCommand);
 
         //then
         mockMvc.perform(get("/recipe/1/ingredient/2/show"))
@@ -95,7 +95,7 @@ public class IngredientControllerTest {
         ingredientCommand.setId(2L);
 
         //when
-        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
+        when(ingredientService.findIngredient(anyLong(), anyLong())).thenReturn(ingredientCommand);
         when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
 
         //then
@@ -115,7 +115,7 @@ public class IngredientControllerTest {
         command.setRecipeId(2L);
 
         //when
-        when(ingredientService.saveIngredientCommand(any())).thenReturn(command);
+        when(ingredientService.saveOrUpdateIngredient(any())).thenReturn(command);
 
         //then
         mockMvc.perform(post("/recipe/2/ingredient")
@@ -129,9 +129,9 @@ public class IngredientControllerTest {
     @Test
     public void testDeleteIngredient() throws Exception {
         //then
-        mockMvc.perform(get("/recipe/2/ingredient/3/delete"))
+        mockMvc.perform(get("/recipe/2/ingredient/3/deleteIngredient"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/2/ingredients"));
-        verify(ingredientService, times(1)).deleteById(anyLong(), anyLong());
+        verify(ingredientService, times(1)).deleteIngredient(anyLong(), anyLong());
     }
 }

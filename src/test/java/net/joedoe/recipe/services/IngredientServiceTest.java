@@ -41,7 +41,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    public void findByRecipeIdAndRecipeIdHappyPath() {
+    public void testFindIngredient() {
         //given
         Recipe recipe = new Recipe();
         recipe.setId(1L);
@@ -62,7 +62,7 @@ public class IngredientServiceTest {
 
         //when
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
-        IngredientCommand ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(1L, 3L);
+        IngredientCommand ingredientCommand = ingredientService.findIngredient(1L, 3L);
 
         //then
         assertEquals(Long.valueOf(3L), ingredientCommand.getId());
@@ -71,7 +71,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    public void testSaveRecipeCommand() {
+    public void testSaveOrUpdate() {
         //given
         IngredientCommand command = new IngredientCommand();
         command.setId(3L);
@@ -86,7 +86,7 @@ public class IngredientServiceTest {
         //when
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
         when(recipeRepository.save(any())).thenReturn(savedRecipe);
-        IngredientCommand savedCommand = ingredientService.saveIngredientCommand(command);
+        IngredientCommand savedCommand = ingredientService.saveOrUpdateIngredient(command);
 
         //then
         assertEquals(Long.valueOf(3L), savedCommand.getId());
@@ -95,7 +95,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    public void testDeleteById() throws Exception {
+    public void testDelete() throws Exception {
         //given
         Recipe recipe = new Recipe();
         Ingredient ingredient = new Ingredient();
@@ -107,7 +107,7 @@ public class IngredientServiceTest {
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
 
         //when
-        ingredientService.deleteById(1L, 3L);
+        ingredientService.deleteIngredient(1L, 3L);
 
         //then
         verify(recipeRepository, times(1)).findById(anyLong());

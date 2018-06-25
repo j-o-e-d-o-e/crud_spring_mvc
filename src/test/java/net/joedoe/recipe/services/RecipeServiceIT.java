@@ -16,9 +16,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class RecipeServiceIT {
-    private static final String NEW_DESCRIPTION = "New Description";
     @Autowired
-    private RecipeService service;
+    private IRecipeService<Recipe> service;
     @Autowired
     private RecipeRepository repository;
     @Autowired
@@ -28,15 +27,16 @@ public class RecipeServiceIT {
     @Test
     public void testSaveOfDescription() {
         //given
+        String description = "new description";
         Iterable<Recipe> recipes = repository.findAll();
         Recipe testRecipe = recipes.iterator().next();
-        testRecipe.setDescription(NEW_DESCRIPTION);
+        testRecipe.setDescription(description);
 
         //when: user input via form with command obj as input for service to save
         RecipeCommand savedRecipeCommand = service.saveRecipeCommand(converter.convert(testRecipe));
 
         //then
-        assertEquals(NEW_DESCRIPTION, savedRecipeCommand.getDescription());
+        assertEquals(description, savedRecipeCommand.getDescription());
         assertEquals(testRecipe.getId(), savedRecipeCommand.getId());
         assertEquals(testRecipe.getCategories().size(), savedRecipeCommand.getCategories().size());
         assertEquals(testRecipe.getIngredients().size(), savedRecipeCommand.getIngredients().size());

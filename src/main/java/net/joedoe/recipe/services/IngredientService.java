@@ -31,7 +31,7 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
+    public IngredientCommand findIngredient(Long recipeId, Long ingredientId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         if (!recipeOptional.isPresent()) {
             //todo impl error handling
@@ -51,7 +51,7 @@ public class IngredientService implements IIngredientService {
 
     @Override
     @Transactional
-    public IngredientCommand saveIngredientCommand(IngredientCommand command) {
+    public IngredientCommand saveOrUpdateIngredient(IngredientCommand command) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(command.getRecipeId());
         if (!recipeOptional.isPresent()) {
             //todo toss error if not found!
@@ -73,14 +73,11 @@ public class IngredientService implements IIngredientService {
                         .orElseThrow(() -> new RuntimeException("UOM NOT FOUND"))); //todo address this
             } else {
                 //add new Ingredient
-                Ingredient ingredient = ingredientCommandToIngredient.convert(command);
-                ingredient.setRecipe(recipe);
-                recipe.addIngredient(ingredient);
+                recipe.addIngredient(ingredientCommandToIngredient.convert(command));
             }
             Recipe savedRecipe = recipeRepository.save(recipe);
-
             Optional<Ingredient> savedIngredientOptional = savedRecipe.getIngredients().stream()
-                    .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
+                    .filter(ingredient -> ingredient.getId().equals(command.getId()))
                     .findFirst();
             //check by description
             if(!savedIngredientOptional.isPresent()){
@@ -91,13 +88,13 @@ public class IngredientService implements IIngredientService {
                         .filter(recipeIngredients -> recipeIngredients.getUom().getId().equals(command.getUom().getId()))
                         .findFirst();
             }
-            //to do check for fail
+            //todo check for fail
             return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
         }
     }
 
     @Override
-    public void deleteById(Long recipeId, Long ingredientId) {
+    public void deleteIngredient(Long recipeId, Long ingredientId) {
         log.debug("Deleting ingredient: " + recipeId + ":" + ingredientId);
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
         if(recipeOptional.isPresent()){

@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 public class RecipeServiceTest {
-    private RecipeService service;
+    private IRecipeService<Recipe> service;
     @Mock
     private RecipeRepository repository;
     @Mock
@@ -34,7 +34,7 @@ public class RecipeServiceTest {
     }
 
     @Test
-    public void findAll() {
+    public void testFindAll() {
         //given
         HashSet recipesData = new HashSet();
         recipesData.add(new Recipe());
@@ -49,7 +49,7 @@ public class RecipeServiceTest {
     }
 
     @Test
-    public void getRecipeByIdTest() {
+    public void testFindById() {
         //given
         Recipe recipe = new Recipe();
         recipe.setId(1L);
@@ -66,12 +66,9 @@ public class RecipeServiceTest {
     }
 
     @Test
-    public void deleteByIdTest() {
-        //given
-        Long id = 2L;
-        service.deleteById(id);
-
-        //no when, since method has void return type
+    public void testDeleteById() {
+        //when
+        service.deleteById(anyLong());
 
         //then
         verify(repository, times(1)).deleteById(anyLong());

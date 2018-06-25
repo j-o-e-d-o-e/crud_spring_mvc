@@ -4,9 +4,9 @@ import net.joedoe.recipe.commands.IngredientCommand;
 
 public interface IIngredientService {
 
-    IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId);
+    IngredientCommand findIngredient(Long recipeId, Long ingredientId);
 
-    IngredientCommand saveIngredientCommand(IngredientCommand command);
+    IngredientCommand saveOrUpdateIngredient(IngredientCommand command);
 
-    void deleteById(Long recipeId, Long idToDelete);
+    void deleteIngredient(Long recipeId, Long idToDelete);
 }

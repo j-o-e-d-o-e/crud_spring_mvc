@@ -23,8 +23,8 @@ public class UnitOfMeasureService implements IUnitOfMeasureService {
 
 
     @Override
-    public Optional<UnitOfMeasure> findByDescription(String each) {
-        return unitOfMeasureRepository.findByDescription(each);
+    public Optional<UnitOfMeasure> findByDescription(String description) {
+        return unitOfMeasureRepository.findByDescription(description);
     }
 
     @Override

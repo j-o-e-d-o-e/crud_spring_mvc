@@ -34,11 +34,6 @@ public class RecipeService implements IRecipeService<Recipe> {
     }
 
     @Override
-    public void save(Recipe recipe) {
-        repository.save(recipe);
-    }
-
-    @Override
     public Recipe findById(Long id) {
         return repository.findById(id).orElse(null);
     }
@@ -50,10 +45,14 @@ public class RecipeService implements IRecipeService<Recipe> {
     }
 
     @Override
+    public void save(Recipe recipe) {
+        repository.save(recipe);
+    }
+
+    @Override
     @Transactional
     public RecipeCommand saveRecipeCommand(RecipeCommand command) {
-        Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
-        Recipe savedRecipe = repository.save(detachedRecipe);
+        Recipe savedRecipe = repository.save(recipeCommandToRecipe.convert(command));
         log.debug("Saved RecipeId:" + savedRecipe.getId());
         return recipeToRecipeCommand.convert(savedRecipe);
     }

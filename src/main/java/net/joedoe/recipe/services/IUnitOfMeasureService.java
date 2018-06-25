@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface IUnitOfMeasureService {
 
-    Optional<UnitOfMeasure> findByDescription(String each);
+    Optional<UnitOfMeasure> findByDescription(String description);
 
     Set<UnitOfMeasureCommand> listAllUoms();
 }
