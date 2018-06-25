@@ -8,8 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class CategoryToCategoryCommandTest {
-    private static final Long ID_VALUE = 1L;
-    private static final String DESCRIPTION = "descript";
     private CategoryToCategoryCommand converter;
 
     @Before
@@ -28,17 +26,19 @@ public class CategoryToCategoryCommandTest {
     }
 
     @Test
-    public void convert() {
+    public void testConvert() {
         //given
+        Long id = 1L;
+        String description = "description";
         Category category = new Category();
-        category.setId(ID_VALUE);
-        category.setDescription(DESCRIPTION);
+        category.setId(id);
+        category.setDescription(description);
 
         //when
         CategoryCommand categoryCommand = converter.convert(category);
 
         //then
-        assertEquals(ID_VALUE, categoryCommand.getId());
-        assertEquals(DESCRIPTION, categoryCommand.getDescription());
+        assertEquals(id, categoryCommand.getId());
+        assertEquals(description, categoryCommand.getDescription());
     }
 }

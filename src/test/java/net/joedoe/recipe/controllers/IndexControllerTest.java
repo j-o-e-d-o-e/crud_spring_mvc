@@ -1,7 +1,7 @@
 package net.joedoe.recipe.controllers;
 
 import net.joedoe.recipe.domains.Recipe;
-import net.joedoe.recipe.services.RecipeService;
+import net.joedoe.recipe.services.IRecipeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -18,14 +18,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class IndexControllerTest {
     private IndexController controller;
     @Mock
-    private RecipeService service;
+    private IRecipeService service;
     @Mock
     private Model model;
     private MockMvc mockMvc;

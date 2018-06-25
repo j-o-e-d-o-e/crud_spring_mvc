@@ -11,11 +11,12 @@ import java.math.BigDecimal;
 import static org.junit.Assert.*;
 
 public class IngredientCommandToIngredientTest {
+    private IngredientCommandToIngredient converter;
+
     private static final BigDecimal AMOUNT = new BigDecimal("1");
-    private static final String DESCRIPTION = "Cheeseburger";
+    private static final String DESCRIPTION = "description";
     private static final Long ID_VALUE = 1L;
     private static final Long UOM_ID = 2L;
-    private IngredientCommandToIngredient converter;
 
     @Before
     public void setUp() {
@@ -33,7 +34,7 @@ public class IngredientCommandToIngredientTest {
     }
 
     @Test
-    public void convert() {
+    public void testConvert() {
         //given
         IngredientCommand command = new IngredientCommand();
         command.setId(ID_VALUE);
@@ -56,7 +57,7 @@ public class IngredientCommandToIngredientTest {
     }
 
     @Test
-    public void convertWithNullUOM() {
+    public void testConvertWithNullUOM() {
         //given
         IngredientCommand command = new IngredientCommand();
         command.setId(ID_VALUE);

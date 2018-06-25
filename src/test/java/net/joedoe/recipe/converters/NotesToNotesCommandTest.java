@@ -8,8 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class NotesToNotesCommandTest {
-    private static final Long ID_VALUE = 1L;
-    private static final String RECIPE_NOTES = "Notes";
     private NotesToNotesCommand converter;
 
     @Before
@@ -30,6 +28,8 @@ public class NotesToNotesCommandTest {
     @Test
     public void convert() {
         //given
+        Long ID_VALUE = 1L;
+        String RECIPE_NOTES = "Notes";
         Notes notes = new Notes();
         notes.setId(ID_VALUE);
         notes.setText(RECIPE_NOTES);

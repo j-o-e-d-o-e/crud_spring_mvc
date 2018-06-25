@@ -8,8 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class UnitOfMeasureToUnitOfMeasureCommandTest {
-    private static final String DESCRIPTION = "description";
-    private static final Long LONG_VALUE = 1L;
     UnitOfMeasureToUnitOfMeasureCommand converter;
 
     @Before
@@ -30,15 +28,17 @@ public class UnitOfMeasureToUnitOfMeasureCommandTest {
     @Test
     public void convert() {
         //given
+        Long id = 1L;
+        String description = "description";
         UnitOfMeasure uom = new UnitOfMeasure();
-        uom.setId(LONG_VALUE);
-        uom.setDescription(DESCRIPTION);
+        uom.setId(id);
+        uom.setDescription(description);
 
         //when
         UnitOfMeasureCommand uomc = converter.convert(uom);
 
         //then
-        assertEquals(LONG_VALUE, uomc.getId());
-        assertEquals(DESCRIPTION, uomc.getDescription());
+        assertEquals(id, uomc.getId());
+        assertEquals(description, uomc.getDescription());
     }
 }
