@@ -1,6 +1,7 @@
 package net.joedoe.recipe.controllers;
 
 import net.joedoe.recipe.commands.RecipeCommand;
+import net.joedoe.recipe.services.CategoryService;
 import net.joedoe.recipe.services.IRecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +21,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RecipeControllerTest {
     @Mock
-    private IRecipeService service;
+    private IRecipeService recipeService;
+    @Mock
+    private CategoryService categoryService;
     private MockMvc mockMvc;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        RecipeController controller = new RecipeController(service);
+        RecipeController controller = new RecipeController(recipeService, categoryService);
         mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
@@ -35,7 +38,8 @@ public class RecipeControllerTest {
         mockMvc.perform(get("/recipe/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipe-form"))
-                .andExpect(model().attributeExists("recipe"));
+                .andExpect(model().attributeExists("recipe"))
+                .andExpect(model().attributeExists("categories"));
     }
 
     @Test
@@ -46,7 +50,7 @@ public class RecipeControllerTest {
         recipe.setId(id);
 
         //when
-        when(service.findCommandById(anyLong())).thenReturn(recipe);
+        when(recipeService.findCommandById(anyLong())).thenReturn(recipe);
 
         //then
         mockMvc.perform(get("/recipe/1/show"))
@@ -64,7 +68,7 @@ public class RecipeControllerTest {
         command.setId(id);
 
         //when
-        when(service.findCommandById(anyLong())).thenReturn(command);
+        when(recipeService.findCommandById(anyLong())).thenReturn(command);
 
         //then
         mockMvc.perform(get("/recipe/2/update"))
@@ -76,10 +80,10 @@ public class RecipeControllerTest {
 
     @Test
     public void testDeleteRecipe() throws Exception {
-        mockMvc.perform(get("/recipe/1/deleteIngredient"))
+        mockMvc.perform(get("/recipe/1/delete"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
-        verify(service, times(1)).deleteById(anyLong());
+        verify(recipeService, times(1)).deleteById(anyLong());
     }
 
     @Test
@@ -89,7 +93,7 @@ public class RecipeControllerTest {
         command.setId(2L);
 
         //when
-        when(service.saveRecipeCommand(any())).thenReturn(command);
+        when(recipeService.saveRecipeCommand(any())).thenReturn(command);
 
         //then
         mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED)

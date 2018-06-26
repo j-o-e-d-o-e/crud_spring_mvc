@@ -27,7 +27,7 @@ public class RecipeService implements IRecipeService<Recipe> {
 
     @Override
     public Set<Recipe> findAll() {
-        log.debug("RecipeRecipeService: findAll()");
+        log.debug("RecipeService: findAll()");
         Set<Recipe> recipes = new HashSet<>();
         repository.findAll().iterator().forEachRemaining(recipes::add);
         return recipes;
