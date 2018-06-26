@@ -1,5 +1,6 @@
 package net.joedoe.recipe.controllers;
 
+import net.joedoe.recipe.exceptions.NotFoundException;
 import net.joedoe.recipe.commands.RecipeCommand;
 import net.joedoe.recipe.services.CategoryService;
 import net.joedoe.recipe.services.IRecipeService;
@@ -100,5 +101,25 @@ public class RecipeControllerTest {
                 .param("id", "").param("description", "some string"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/2/show"));
+    }
+
+    @Test
+    public void testHandleNotFound() throws Exception {
+        //when
+        when(recipeService.findCommandById(anyLong())).thenThrow(NotFoundException.class);
+
+        //then
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
+
+
+    @Test
+    public void testHandleNumberFormat() throws Exception {
+        //then
+        mockMvc.perform(get("/recipe/abc/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(view().name("400error"));
     }
 }

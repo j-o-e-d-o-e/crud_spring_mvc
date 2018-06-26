@@ -5,11 +5,13 @@ import net.joedoe.recipe.commands.RecipeCommand;
 import net.joedoe.recipe.converters.RecipeCommandToRecipe;
 import net.joedoe.recipe.converters.RecipeToRecipeCommand;
 import net.joedoe.recipe.domains.Recipe;
+import net.joedoe.recipe.exceptions.NotFoundException;
 import net.joedoe.recipe.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -35,7 +37,11 @@ public class RecipeService implements IRecipeService<Recipe> {
 
     @Override
     public Recipe findById(Long id) {
-        return repository.findById(id).orElse(null);
+        Optional<Recipe> recipeOptional = repository.findById(id);
+        if(!recipeOptional.isPresent()){
+            throw new NotFoundException("Recipe not found. For id value: " + id);
+        }
+        return recipeOptional.get();
     }
 
     @Override

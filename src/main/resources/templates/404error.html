@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<head th:include="fragments/header :: head">
+    <title>404 Not Found Error</title>
+</head>
+<body>
+<div th:replace="fragments/header :: navbar"></div>
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h1>404 Not Found Error</h1>
+            <p th:text="${exception.getMessage()}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

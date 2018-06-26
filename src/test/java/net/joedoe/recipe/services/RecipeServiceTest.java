@@ -1,8 +1,10 @@
 package net.joedoe.recipe.services;
 
+import net.joedoe.recipe.commands.RecipeCommand;
 import net.joedoe.recipe.converters.RecipeCommandToRecipe;
 import net.joedoe.recipe.converters.RecipeToRecipeCommand;
 import net.joedoe.recipe.domains.Recipe;
+import net.joedoe.recipe.exceptions.NotFoundException;
 import net.joedoe.recipe.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +48,7 @@ public class RecipeServiceTest {
         //then
         assertEquals(1, recipes.size());
         verify(repository, times(1)).findAll();
+        verify(repository, never()).findById(anyLong());
     }
 
     @Test
@@ -66,11 +69,43 @@ public class RecipeServiceTest {
     }
 
     @Test
+    public void testFindCommandById() {
+        //given
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        //when
+        when(repository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeToRecipeCommand.convert(any())).thenReturn(recipeCommand);
+        RecipeCommand returnedRecipeCommand = service.findCommandById(1L);
+
+        //then
+        assertNotNull("Null recipe returned", returnedRecipeCommand);
+        verify(repository, times(1)).findById(anyLong());
+        verify(repository, never()).findAll();
+    }
+
+    @Test
     public void testDeleteById() {
         //when
         service.deleteById(anyLong());
 
         //then
         verify(repository, times(1)).deleteById(anyLong());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() {
+        //given
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        //when
+        when(repository.findById(anyLong())).thenReturn(recipeOptional);
+        Recipe recipeReturned = service.findById(1L);
+
+        //should go boom
     }
 }

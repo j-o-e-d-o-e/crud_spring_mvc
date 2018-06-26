@@ -3,14 +3,14 @@ package net.joedoe.recipe.controllers;
 import lombok.extern.slf4j.Slf4j;
 import net.joedoe.recipe.commands.RecipeCommand;
 import net.joedoe.recipe.domains.Recipe;
+import net.joedoe.recipe.exceptions.NotFoundException;
 import net.joedoe.recipe.services.CategoryService;
 import net.joedoe.recipe.services.IRecipeService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Controller
@@ -56,5 +56,25 @@ public class RecipeController {
         log.debug("RecipeController: saveOrUpdateIngredient()");
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND) //makes status().isNotFound() in test class work
+    @ExceptionHandler(NotFoundException.class) //custom exception class
+    public ModelAndView handleNotFound(Exception exception) {
+        log.debug("RecipeController: handleNotFound(): " + exception.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("404error");
+        modelAndView.addObject("exception", exception);
+        return modelAndView;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NumberFormatException.class)
+    public ModelAndView handleNumberFormat(Exception exception){
+        log.debug("RecipeController: handleNumberFormat(): " + exception.getMessage());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("400error");
+        modelAndView.addObject("exception", exception);
+        return modelAndView;
     }
 }
