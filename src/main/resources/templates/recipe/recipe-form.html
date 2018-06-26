@@ -17,26 +17,20 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-3 form-group">
+                                <div class="col-md-6 form-group">
                                     <label>Recipe Description:</label>
                                     <input type="text" class="form-control" th:field="${recipe.description}"/>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-3 form-group">
+                                <div class="col-md-2 form-group">
                                     <label>Categories:</label>
                                 </div>
                                 <div class="col-md-9 form-group">
-                                    <div class="radio">
+                                    <!--todo-->
+                                    <div class="radio" th:each="category : ${categories}">
                                         <label>
-                                            <input type="checkbox" value=""/>
-                                            Cat 1
-                                        </label>
-                                    </div>
-                                    <div class="radio" th:remove="all">
-                                        <label>
-                                            <input type="checkbox" value=""/>
-                                            Cat 2
+                                            <input type="checkbox" value="" th:text="${' ' + category.description}"/>
                                         </label>
                                     </div>
                                 </div>
@@ -44,7 +38,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group">
                                     <label>Prep Time:</label>
-                                    <input type="text" class="form-control" th:field="*{prepTime}"/>
+                                    <input type="text" class="form-control" th:field="${recipe.prepTime}"/>
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Cooktime:</label>
@@ -52,16 +46,12 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Difficulty:</label>
-                                    <select class="form-control" th:remove="all">
-                                        <option>Easy</option>
-                                        <option>Medium</option>
-                                        <option>Hard</option>
-                                    </select>
                                     <select class="form-control" th:field="*{difficulty}">
                                         <!--when th:value is equal to recipe.difficulty, then selected is added to html-->
-                                        <option th:each="difficultyValue : ${T(net.joedoe.recipe.domains.Difficulty).values()}"
-                                                th:value="${difficultyValue.name()}"
-                                                th:text="${difficultyValue.name()}">
+                                        <!--/*@thymesVar id="difficulty" type="java"*/-->
+                                        <option th:each="difficulty : ${T(net.joedoe.recipe.domains.Difficulty).values()}"
+                                                th:value="${difficulty.name()}"
+                                                th:text="${difficulty.name()}">
                                         </option>
                                     </select>
                                 </div>
@@ -97,12 +87,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <ul>
-                                        <li th:remove="all">1 Cup of milk</li>
-                                        <li th:remove="all">1 Teaspoon of chocolate</li>
                                         <li th:each="ingredient : ${recipe.ingredients}"
                                             th:text="${(ingredient.getAmount() +
                                         ' ' + ingredient.uom.getDescription() +
-                                        ' - ' + ingredient.getDescription())}">1 Teaspoon of Sugar
+                                        ' - ' + ingredient.getDescription())}">
                                         </li>
                                     </ul>
                                 </div>

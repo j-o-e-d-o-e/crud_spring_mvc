@@ -9,7 +9,6 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">
-
                 <div class="panel-heading">
                     <h1 class="panel-title">Ingredient</h1>
                 </div>
@@ -22,16 +21,9 @@
                                 <th>Description</th>
                             </tr>
                             </thead>
-                            <tr th:remove="all">
-                                <td>12333</td>
-                                <td>Tasty Goodnees 2</td>
-                                <td><a href="#">View</a></td>
-                                <td><a href="#">Update</a></td>
-                                <td><a href="#">Delete</a></td>
-                            </tr>
                             <tr>
-                                <td th:text="${ingredient.id}">334</td>
-                                <td th:text="${ingredient.amount} + ' ' + ${ingredient.uom.getDescription()} + ' ' + ${ingredient.description}">Tasty Goodnees 3</td>
+                                <td th:text="${ingredient.id}"></td>
+                                <td th:text="${ingredient.amount} + ' ' + ${ingredient.uom.getDescription()} + ' ' + ${ingredient.description}"></td>
                             </tr>
                         </table>
                     </div>
