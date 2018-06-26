@@ -1,7 +1,7 @@
 package net.joedoe.recipe.controllers;
 
-import net.joedoe.recipe.exceptions.NotFoundException;
 import net.joedoe.recipe.commands.RecipeCommand;
+import net.joedoe.recipe.exceptions.NotFoundException;
 import net.joedoe.recipe.services.CategoryService;
 import net.joedoe.recipe.services.IRecipeService;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class RecipeControllerTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         RecipeController controller = new RecipeController(recipeService, categoryService);
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(controller).setControllerAdvice(new ControllerExceptionHandler()).build();
     }
 
     @Test

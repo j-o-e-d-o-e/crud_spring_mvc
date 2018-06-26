@@ -57,24 +57,4 @@ public class RecipeController {
         RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
-
-    @ResponseStatus(HttpStatus.NOT_FOUND) //makes status().isNotFound() in test class work
-    @ExceptionHandler(NotFoundException.class) //custom exception class
-    public ModelAndView handleNotFound(Exception exception) {
-        log.debug("RecipeController: handleNotFound(): " + exception.getMessage());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("404error");
-        modelAndView.addObject("exception", exception);
-        return modelAndView;
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public ModelAndView handleNumberFormat(Exception exception){
-        log.debug("RecipeController: handleNumberFormat(): " + exception.getMessage());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("400error");
-        modelAndView.addObject("exception", exception);
-        return modelAndView;
-    }
 }
