@@ -11,4 +11,8 @@ public interface IUnitOfMeasureService {
     Optional<UnitOfMeasure> findByDescription(String description);
 
     Set<UnitOfMeasureCommand> listAllUoms();
+
+    Long count();
+
+    void save(UnitOfMeasure uom);
 }

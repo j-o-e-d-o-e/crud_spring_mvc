@@ -34,4 +34,14 @@ public class UnitOfMeasureService implements IUnitOfMeasureService {
                 .map(unitOfMeasureToUnitOfMeasureCommand::convert)
                 .collect(Collectors.toSet());
     }
+
+    @Override
+    public Long count() {
+        return unitOfMeasureRepository.count();
+    }
+
+    @Override
+    public void save(UnitOfMeasure uom) {
+        unitOfMeasureRepository.save(uom);
+    }
 }

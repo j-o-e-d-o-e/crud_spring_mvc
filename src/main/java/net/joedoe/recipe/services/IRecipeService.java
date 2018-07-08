@@ -16,4 +16,6 @@ public interface IRecipeService<T> {
     RecipeCommand saveRecipeCommand(RecipeCommand testRecipeCommand);
 
     void deleteById(Long id);
+
+    Long count();
 }

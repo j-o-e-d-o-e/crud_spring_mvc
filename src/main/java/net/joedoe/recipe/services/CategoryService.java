@@ -29,4 +29,12 @@ public class CategoryService {
         repository.findAll().iterator().forEachRemaining(categories::add);
         return categories;
     }
+
+    public Long count() {
+        return repository.count();
+    }
+
+    public void save(Category cat) {
+        repository.save(cat);
+    }
 }

@@ -67,4 +67,9 @@ public class RecipeService implements IRecipeService<Recipe> {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Long count() {
+        return repository.count();
+    }
 }

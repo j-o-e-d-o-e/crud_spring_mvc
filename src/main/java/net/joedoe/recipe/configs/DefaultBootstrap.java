@@ -6,6 +6,7 @@ import net.joedoe.recipe.services.IRecipeService;
 import net.joedoe.recipe.services.RecipeService;
 import net.joedoe.recipe.services.UnitOfMeasureService;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +14,13 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 @Component
-public class DevBootstrap implements ApplicationListener<ContextRefreshedEvent> {
+@Profile("default")
+public class DefaultBootstrap implements ApplicationListener<ContextRefreshedEvent> {
     private final CategoryService categoryService;
     private final IRecipeService<Recipe> recipeService;
     private final UnitOfMeasureService unitOfMeasureService;
 
-    public DevBootstrap(CategoryService categoryService, RecipeService recipeService, UnitOfMeasureService unitOfMeasureService) {
+    public DefaultBootstrap(CategoryService categoryService, RecipeService recipeService, UnitOfMeasureService unitOfMeasureService) {
         this.categoryService = categoryService;
         this.recipeService = recipeService;
         this.unitOfMeasureService = unitOfMeasureService;
