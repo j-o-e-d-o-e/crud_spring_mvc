@@ -26,6 +26,7 @@ public class DefaultBootstrap implements ApplicationListener<ContextRefreshedEve
         this.unitOfMeasureService = unitOfMeasureService;
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     @Transactional //Spring treats whole method as one unit, no fetch type declaration needed
     public void onApplicationEvent(ContextRefreshedEvent event) {
